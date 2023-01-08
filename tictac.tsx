@@ -13,6 +13,8 @@ export default function Tictac() {
   const [nowPlayingPic, setNowPlayingPic] = useState(imgs[0])
   const startBoard = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
   const startBoardImgs = [[blankImg, blankImg, blankImg], [blankImg, blankImg, blankImg], [blankImg, blankImg, blankImg]]
+  const x = 'X Playing', o = 'O Playing'
+  const [playerText, setPlayerText] = useState(x)
   let [board, setBoard] = useState(startBoard)
   let [boardImgs, setBoardImgs] = useState(startBoardImgs)
   const [player, setPlayer] = useState(0)
@@ -66,15 +68,28 @@ export default function Tictac() {
           setPlayer(player + 1)
           if(player%2 == 0) setNowPlayingPic(imgs[1])
           else setNowPlayingPic(imgs[0])
+          if (playerText == x) setPlayerText(o)
+          else setPlayerText(x)
         }
       }
     }
+  }
+  const checkWinner = () => {
+    if (board[0][1] == 1 && board[0][0] == 1 && board[0][2] == 1) {
+      alert('Winner: ' + board)
+      reset()
+      return true
+    }
+    return false
   }
   const checkPath = (vec: Array<number>) => {
     //console.log("vec: " + vec)
     if (vec[0] === vec[1] && vec[0] === vec[2] && vec[0] != 0) return vec[0]
     if (vec[0] === 0 || vec[1] === 0 || vec[2] === 0) return 0
     return -1
+  }
+  const win = (winner: string) => {
+    alert(winner + " Won!")
   }
   const checkWins = () => {
     //-1 - no wins and no more moves.
@@ -109,6 +124,7 @@ export default function Tictac() {
     if (!moves) return -1
     return 0
   }
+  let boardstr = board.toString()
   return (
     <View style={styles.colContainer}>
       <View style={styles.rowContainer}>
